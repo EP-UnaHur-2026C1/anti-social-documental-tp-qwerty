@@ -4,17 +4,17 @@ const postSchema = new mongoose.Schema(
     {
         descripcion: {
             type: String,
-            required:(true, "La descripción es obligatoria"),
+            required:[true, "La descripción es obligatoria"],
         },
         usuario: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: (true, "El usuario es obligatorio"),
+            required: [true, "El usuario es obligatorio"],
         },
         imagenes: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "PostImages",
+                ref: "PostImage",
             },
         ],
         tags: [

@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const tagSchema = new mongoose.Schema(
   {
-    name: {
+    nombre: {
       type: String,
       required: [true, "El nombre es obligatorio"],
+      maxlength: [20, "El nombre no puede superar los 100 caracteres"],
       unique: true,
       trim: true,
     },

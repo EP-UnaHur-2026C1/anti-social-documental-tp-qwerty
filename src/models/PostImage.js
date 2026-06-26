@@ -6,6 +6,7 @@ const postImageSchema = new mongoose.Schema(
       type: String,
       required: [true, "La URL es obligatoria"],
       trim: true,
+      maxlength: [300, "La url no puede superar los 300 caracteres"],
     },
   },
   {

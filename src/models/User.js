@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema(
         nickName: {
             type: String,
             required: [true, "El nickname es obligatorio"],
+            maxlength: [20, "El nickname no puede superar los 20 caracteres"],
             unique: true,
             trim: true,
         },
