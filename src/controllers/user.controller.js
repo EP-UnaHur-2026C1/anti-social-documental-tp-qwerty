@@ -31,7 +31,7 @@ const crearUsuario = async (req,res) => {
 
 const actualizarUsuario = async (req,res) => {
     try {
-        const id = req.usuario._Id;
+        const id = req.usuario._id;
         await User.findByIdAndUpdate(id, req.body, {
             runValidators: true,
         });
@@ -46,7 +46,7 @@ const actualizarUsuario = async (req,res) => {
 
 const eliminarUsuario = async (req,res) => {
     try {
-        const id = req.usuario._Id;
+        const id = req.usuario._id;
         await User.findByIdAndDelete(id);
         
         res.status(200).json({message: "Usuario eliminado con exito"});

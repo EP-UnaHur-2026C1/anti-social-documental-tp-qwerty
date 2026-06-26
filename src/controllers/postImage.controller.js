@@ -31,7 +31,7 @@ const crearImagen = async (req,res) => {
 
 const actualizarImagen = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.imagen._id;
         await PostImage.findByIdAndUpdate(id, req.body, {
             runValidators: true,
         });
@@ -47,7 +47,7 @@ const actualizarImagen = async (req,res) => {
 
 const eliminarImagen = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.imagen._id;
         await PostImage.findByIdAndDelete(id);
 
         res.status(200).json({

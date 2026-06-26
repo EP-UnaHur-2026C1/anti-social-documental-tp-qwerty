@@ -1,4 +1,5 @@
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 const obtenerPosts = async (req, res) => {
     try {
@@ -25,7 +26,22 @@ const obtenerPostPorId = async (req, res) => {
         .populate("tags", "nombre")
         .select("-createdAt -updatedAt -__v");
 
-        res.status(200).json(post);
+        const meses = Number(process.env.LONGEVIDAD_COMENTARIOS_VISIBLES);
+        const fechaLimite = new Date();
+        fechaLimite.setMonth(fechaLimite.getMonth() - meses);
+
+        const comentarios = await Comment.find({
+            post: id,
+            createdAt: {$gte: fechaLimite},
+        })
+        .populate("usuario", "nickName")
+        .select("-updatedAt -__v")
+        .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            post,
+            comentarios
+        });
     } catch (error) {
         res.status(500).json({
             message: "Error al obtener el post",
@@ -49,7 +65,7 @@ const crearPost = async (req,res) => {
 
 const actualizarPost = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.post._id;
         await Post.findByIdAndUpdate(id, req.body, {
             runValidators: true,
         });
@@ -65,7 +81,7 @@ const actualizarPost = async (req,res) => {
 
 const eliminarPost = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.imagen._id;
         await Post.findByIdAndDelete(id);
 
         res.status(200).json({message: "Post eliminado con exito"});

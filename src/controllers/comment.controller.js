@@ -4,6 +4,7 @@ const obtenerComentarios = async (req, res) => {
     try {
         const comentarios = await Comment.find()
         .populate("usuario", "nickName")
+        .populate("post", "descripcion")
         .select("-createdAt -updatedAt -__v");
         res.status(200).json(comentarios);
     } catch (error) {
@@ -19,6 +20,7 @@ const obtenerComentarioPorId = async (req, res) => {
         const { id } = req.params;
         const comentario = await Comment.findById(id)
         .populate("usuario", "nickName")
+        .populate("post", "descripcion")
         .select("-createdAt -updatedAt -__v");
 
         res.status(200).json(comentario);
@@ -45,7 +47,7 @@ const crearComentario = async (req,res) => {
 
 const actualizarComentario = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.imagen._id;
         await Comment.findByIdAndUpdate(id, req.body, {
             runValidators: true,
         });
@@ -60,7 +62,7 @@ const actualizarComentario = async (req,res) => {
 
 const eliminarComentario = async (req,res) => {
     try {
-        const { id } = req.params;
+        const id = req.imagen._id;
         await Comment.findByIdAndDelete(id);
 
         res.status(200).json({message: "Comentario eliminado con exito"});
