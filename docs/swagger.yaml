@@ -1,0 +1,579 @@
+openapi: 3.0.0
+
+info:
+  title: UnaHur Anti-Social Net API
+  version: 1.0.0
+  description: API para la red social Anti-Social Net
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /usuarios:
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        "200":
+          description: Lista de usuarios obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crear un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Usuario creado con éxito
+        "400":
+          description: Datos de la petición inválidos 
+        "500":
+          description: Error interno del servidor
+  /usuarios/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Usuario encontrado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar/Modificar un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Usuario actualizado con éxito
+        "400":
+          description: ID o datos de la petición inválidos
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un usuario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Usuario eliminado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      responses:
+        "200":
+          description: Lista de post obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crear un post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        "201":
+          description: Post creado con éxito
+        "400":
+          description: Datos de la petición inválidos 
+        "500":
+          description: Error interno del servidor
+  /posts/{id}:
+    get:
+      summary: Obtener un post por ID y sus comentarios mas recientes 
+      parameters:
+        - $ref: "#/components/parameters/Id"
+        - $ref: "#/components/parameters/AntiguedadMeses"
+      responses:
+        "200":
+          description: Post con sus comentarios recientes encontrado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post:
+                    type: object
+                  comentarios:
+                    type: array
+                    items:
+                      type: object
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar/Modificar un post por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        "200":
+          description: Post actualizado con éxito
+        "400":
+          description: ID o datos de la petición inválidos
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un post por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Post eliminado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Post no encontrado
+        "500":
+          description: Error interno del servidor
+  /posts/{id}/imagenes/{imagenId}:
+    post:
+      summary: Agrega una imagen a un post
+      parameters:
+        - $ref: "#/components/parameters/Id"
+        - $ref: "#/components/parameters/ImagenId"
+      responses:
+        "201":
+          description: Imagen agregada al post con éxito
+        "400":
+          description: IDs de la petición inválidos
+        "404":
+          description: Post o imagen no encontrados
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina una imagen del post por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+        - $ref: "#/components/parameters/ImagenId"
+      responses:
+        "200":
+          description: Imagen eliminada del post con éxito
+        "400":
+          description: IDs de la petición no válidos
+        "404":
+          description: Post o imagen no encontrados
+        "500":
+          description: Error interno del servidor
+  /posts/{id}/tags/{tagId}:
+    post:
+      summary: Agrega un tag a un post
+      parameters:
+        - $ref: "#/components/parameters/Id"
+        - $ref: "#/components/parameters/TagId"
+      responses:
+        "201":
+          description: Tag agregado al post con éxito
+        "400":
+          description: IDs de la petición inválidos
+        "404":
+          description: Post o tag no encontrados
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina un tag del post por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+        - $ref: "#/components/parameters/TagId"
+      responses:
+        "200":
+          description: Tag eliminado del post con éxito
+        "400":
+          description: IDs de la petición no válidos
+        "404":
+          description: Post o tag no encontrados
+        "500":
+          description: Error interno del servidor
+  /tags:
+    get:
+      summary: Obtener todos los tags
+      responses:
+        "200":
+          description: Lista de tags obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crear un tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        "201":
+          description: Tag creado con éxito
+        "400":
+          description: Datos de la petición inválidos 
+        "500":
+          description: Error interno del servidor
+  /tags/{id}:
+    get:
+      summary: Obtener un tag por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Tag encontrado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Tag no encontrado
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar/Modificar un tag por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        "200":
+          description: Tag actualizado con éxito
+        "400":
+          description: ID o datos de la petición inválidos
+        "404":
+          description: Tag no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un Tag por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Tag eliminado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Tag no encontrado
+        "500":
+          description: Error interno del servidor
+  /imagenes:
+    get:
+      summary: Obtener todas las imágenes
+      responses:
+        "200":
+          description: Lista de imágenes obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crear una imagen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostImage"
+      responses:
+        "201":
+          description: Imagen creada con éxito
+        "400":
+          description: Datos de la petición inválidos 
+        "500":
+          description: Error interno del servidor
+  /imagenes/{id}:
+    get:
+      summary: Obtener una imagen por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Imagen encontrada con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Imagen no encontrada
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar/Modificar una imagen por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostImage"
+      responses:
+        "200":
+          description: Imagen actualizada con éxito
+        "400":
+          description: ID o datos de la petición inválidos
+        "404":
+          description: Imagen no encontrada
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar una imagen por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Imagen eliminada con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Imagen no encontrada
+        "500":
+          description: Error interno del servidor
+  /comentarios:
+    get:
+      summary: Obtener todos los comentarios
+      responses:
+        "200":
+          description: Lista de comentarios obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crear un comentario en un post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        "201":
+          description: Comentario creado con éxito
+        "400":
+          description: Datos de la petición inválidos 
+        "500":
+          description: Error interno del servidor
+  /comentarios/{id}:
+    get:
+      summary: Obtener un comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Comentario encontrado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar/Modificar un Comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        "200":
+          description: Comentario actualizado con éxito
+        "400":
+          description: ID o datos de la petición inválidos
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar un comentario por ID
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Comentario eliminado con éxito
+        "400":
+          description: ID de la petición inválido
+        "404":
+          description: Comentario no encontrado
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        nickName:
+          type: string
+          minLength: 3
+          maxLength: 20
+          example: user123
+        email:
+          type: string
+          format: email
+          example: user123@hotmail.com
+      required:
+        - nickName
+        - email
+    Post:
+      type: object
+      properties:
+        descripcion:
+          type: string
+          minLength: 3
+          example: Hola, soy juancito y este es mi primer post
+        usuario:
+          type: string
+          description: ObjectId
+          minLength: 24
+          maxLength: 24
+          example: 6a3ecede4d04ffd1e1aee55c
+        imagenes:
+          type: array
+          items:
+            type: string
+            description: ObjectId
+            minLength: 24
+            maxLength: 24
+            example: 6a3ecede4d04ffd1e1aee55c
+        tags:
+          type: array
+          items:
+            type: string
+            description: ObjectId
+            minLength: 24
+            maxLength: 24
+            example: 6a3ecede4d04ffd1e1aee55c
+      required:
+        - descripcion
+        - usuario
+    Tag:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 3
+          maxLength: 24
+          example: Comida
+      required:
+        - nombre
+    PostImage:
+      type: object
+      properties:
+        url:
+          type: string
+          minLength: 3
+          maxLength: 300
+          example: ../images/gatitos.jpg
+      required:
+        - url
+    Comment:
+      type: object
+      properties:
+        texto:
+          type: string
+          minLength: 3
+          maxLength: 100
+          example: Hola, soy juancito y este es mi primer comentario
+        usuario:
+          type: string
+          description: ObjectId
+          minLength: 24
+          maxLength: 24
+          example: 6a3ecede4d04ffd1e1aee55c
+        post:
+          type: string
+          description: ObjectId
+          minLength: 24
+          maxLength: 24
+          example: 6a3ecede4d04ffd1e1aee55c
+      required:
+        - texto
+        - usuario
+        - post
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ImagenId:
+      name: imagenId
+      in: path
+      required: true
+      schema:
+        type: string
+    TagId:
+      name: tagId
+      in: path
+      required: true
+      schema:
+        type: string
+    AntiguedadMeses:
+      name: meses
+      in: query
+      required: false
+      description: Cantidad de meses de antigüedad máxima para visualizar los comentarios del post
+      schema:
+        type: number
+
+
+

@@ -9,6 +9,11 @@ const commentRoutes = require("./routes/comment.routes");
 const postImageRoutes = require("./routes/postImage.routes");
 const tagRoutes = require("./routes/tag.routes");
 
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+
+const swaggerDocument = YAML.load("./docs/swagger.yaml");
+
 dotenv.config();
 
 const app = express();
@@ -16,6 +21,7 @@ const app = express();
 connectDB();
 
 app.use(express.json());
+
 
 
 app.get("/", (req,res) => {
@@ -27,6 +33,11 @@ app.use("/comentarios", commentRoutes);
 app.use("/posts", postRoutes);
 app.use("/imagenes", postImageRoutes);
 app.use("/tags", tagRoutes);
+app.use(
+    "/api-docs",
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerDocument)
+);
 
 const PORT = process.env.PORT || 3000;
 

@@ -20,11 +20,13 @@ const {
 const validarEntidad = require("../middlewares/validarEntidad");
 const validarEntidadId = require("../middlewares/validarEntidadId");
 const validarObjectIds = require("../middlewares/validarObjectIds");
+const validarMeses = require("../middlewares/validarMeses");
 
 router.get("/", obtenerPosts);
 router.get("/:id",
     validarObjectIds(["id"]),
     validarEntidadId(Post, "Post", "id"),
+    validarMeses,
     obtenerPostPorId);
 router.post("/",
     validarEntidad(postSchema),

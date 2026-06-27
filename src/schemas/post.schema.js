@@ -6,7 +6,7 @@ const postSchema = Joi.object({
         .required()
         .messages({
             "string.base": "La descripción debe ser texto",
-            "string.empty": "La descripción es no puede estar vacia",
+            "string.empty": "La descripción no puede estar vacia",
             "string.min": "La descripción debe tener al menos 3 caracteres",
             "any.required": "La descripción es obligatoria"
         }),

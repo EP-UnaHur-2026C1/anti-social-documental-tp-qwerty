@@ -20,13 +20,14 @@ const obtenerPosts = async (req, res) => {
 const obtenerPostPorId = async (req, res) => {
     try {
         const { id } = req.params;
+        const meses = req.meses || Number(process.env.LONGEVIDAD_COMENTARIOS_VISIBLES);
+
         const post = await Post.findById(id)
         .populate("usuario", "nickName")
         .populate("imagenes", "url")
         .populate("tags", "nombre")
         .select("-createdAt -updatedAt -__v");
 
-        const meses = Number(process.env.LONGEVIDAD_COMENTARIOS_VISIBLES);
         const fechaLimite = new Date();
         fechaLimite.setMonth(fechaLimite.getMonth() - meses);
 
@@ -48,7 +49,6 @@ const obtenerPostPorId = async (req, res) => {
             error: error.message,
         });
     }
-    
 };
 
 const crearPost = async (req,res) => {
